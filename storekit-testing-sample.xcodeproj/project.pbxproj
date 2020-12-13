@@ -53,6 +53,7 @@
 		75E535882586458100F5BF72 /* PaymentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentService.swift; sourceTree = "<group>"; };
 		75E535912586595100F5BF72 /* LifecycleHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifecycleHandler.swift; sourceTree = "<group>"; };
 		75E5359A2586598D00F5BF72 /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
+		75E535A325865C2200F5BF72 /* Subscription1.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Subscription1.storekit; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,9 +107,9 @@
 				75E535862586455800F5BF72 /* Common */,
 				7563CEDA25860FBD00D70488 /* StoreKitTestingSampleApp.swift */,
 				75E5357C2586373A00F5BF72 /* Subscription */,
-				7563CEDE25860FBD00D70488 /* Assets.xcassets */,
 				7563CEE325860FBD00D70488 /* Info.plist */,
 				7563CEE025860FBD00D70488 /* Preview Content */,
+				75E5359F25865BD900F5BF72 /* Resources */,
 			);
 			path = "storekit-testing-sample";
 			sourceTree = "<group>";
@@ -180,6 +181,15 @@
 				75E5359A2586598D00F5BF72 /* View+Extension.swift */,
 			);
 			path = Extension;
+			sourceTree = "<group>";
+		};
+		75E5359F25865BD900F5BF72 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				7563CEDE25860FBD00D70488 /* Assets.xcassets */,
+				75E535A325865C2200F5BF72 /* Subscription1.storekit */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
