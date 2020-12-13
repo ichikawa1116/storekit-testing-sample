@@ -8,15 +8,22 @@
 import Foundation
 import Combine
 
-protocol SubscriptionViewModelType: ObservableObject {
-    func fetchItems()
-    func purchase()
-}
-
-
-final class SubscriptionViewModel: SubscriptionViewModelType {
+final class SubscriptionViewModel: ObservableObject {
     
-    func fetchItems() {
+    @Published private(set) var product: [SubscriptionProduct] = []
+    
+    private let paymentService: PaymentServiceType
+    private let _fetchProducts = PassthroughSubject<Void, Never>()
+    
+    init(paymentService: PaymentServiceType) {
+        
+        self.paymentService = paymentService
+    }
+    
+    func fetchProducts() {
+        paymentService.fetchProducts().sink { products in
+            self.product = products
+        }
     }
     
     func purchase() {
