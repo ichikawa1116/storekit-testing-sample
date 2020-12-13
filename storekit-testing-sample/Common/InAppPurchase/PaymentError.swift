@@ -9,7 +9,8 @@ import Foundation
 
 enum PaymentError: String, Error {
     case notFound
-    case faildPurchase
+    case failedPurchase
+    case failedRestore
     case unknown
 
     var description: String {

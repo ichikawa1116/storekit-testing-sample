@@ -124,7 +124,7 @@ extension PaymentService: SKProductsRequestDelegate {
     }
     
     func request(_ request: SKRequest, didFailWithError error: Error) {
-        print("didFailWithError: \(error)")
+        _paymentState.send(.failed(PaymentError.failedPurchase))
     }
 }
 
@@ -135,11 +135,11 @@ extension PaymentService: SKPaymentTransactionObserver {
     }
     
     func paymentQueue(_ queue: SKPaymentQueue, restoreCompletedTransactionsFailedWithError error: Error) {
-        print("restoreCompletedTransactionsFailedWithError \(error)")
+        _paymentState.send(.failed(PaymentError.failedRestore))
     }
     
     func paymentQueueRestoreCompletedTransactionsFinished(_ queue: SKPaymentQueue) {
-        print("transactions finished")
+        _paymentState.send(.restored)
     }
 }
 
