@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		7563CEDB25860FBD00D70488 /* StoreKitTestingSampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7563CEDA25860FBD00D70488 /* StoreKitTestingSampleApp.swift */; };
-		7563CEDD25860FBD00D70488 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7563CEDC25860FBD00D70488 /* ContentView.swift */; };
+		7563CEDD25860FBD00D70488 /* SubscriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7563CEDC25860FBD00D70488 /* SubscriptionView.swift */; };
 		7563CEDF25860FBD00D70488 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7563CEDE25860FBD00D70488 /* Assets.xcassets */; };
 		7563CEE225860FBD00D70488 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7563CEE125860FBD00D70488 /* Preview Assets.xcassets */; };
 		7563CEED25860FBD00D70488 /* storekit_testing_sampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7563CEEC25860FBD00D70488 /* storekit_testing_sampleTests.swift */; };
@@ -35,7 +35,7 @@
 /* Begin PBXFileReference section */
 		7563CED725860FBD00D70488 /* storekit-testing-sample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "storekit-testing-sample.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7563CEDA25860FBD00D70488 /* StoreKitTestingSampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreKitTestingSampleApp.swift; sourceTree = "<group>"; };
-		7563CEDC25860FBD00D70488 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		7563CEDC25860FBD00D70488 /* SubscriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionView.swift; sourceTree = "<group>"; };
 		7563CEDE25860FBD00D70488 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7563CEE125860FBD00D70488 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		7563CEE325860FBD00D70488 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -96,7 +96,7 @@
 			isa = PBXGroup;
 			children = (
 				7563CEDA25860FBD00D70488 /* StoreKitTestingSampleApp.swift */,
-				7563CEDC25860FBD00D70488 /* ContentView.swift */,
+				7563CEDC25860FBD00D70488 /* SubscriptionView.swift */,
 				7563CEDE25860FBD00D70488 /* Assets.xcassets */,
 				7563CEE325860FBD00D70488 /* Info.plist */,
 				7563CEE025860FBD00D70488 /* Preview Content */,
@@ -259,7 +259,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7563CEDD25860FBD00D70488 /* ContentView.swift in Sources */,
+				7563CEDD25860FBD00D70488 /* SubscriptionView.swift in Sources */,
 				7563CEDB25860FBD00D70488 /* StoreKitTestingSampleApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

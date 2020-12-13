@@ -11,7 +11,7 @@ import SwiftUI
 struct StoreKitTestingSampleApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            SubscriptionView()
         }
     }
 }
