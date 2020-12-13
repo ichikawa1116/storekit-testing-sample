@@ -19,12 +19,9 @@ struct SubscriptionView: View {
             )
             .edgesIgnoringSafeArea(.all)
             VStack(alignment: .center) {
-                
-                Button(action: {
-                    
-                }) {
+                Text(viewModel.price)
+                Button( action: { viewModel.purchase() }) {
                     Text("購入")
-                        
                         .padding(.all, 5.0)
                         .foregroundColor(.green)
                         .background(Color.red)
