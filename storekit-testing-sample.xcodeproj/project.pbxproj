@@ -13,6 +13,7 @@
 		7563CEE225860FBD00D70488 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7563CEE125860FBD00D70488 /* Preview Assets.xcassets */; };
 		7563CEED25860FBD00D70488 /* storekit_testing_sampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7563CEEC25860FBD00D70488 /* storekit_testing_sampleTests.swift */; };
 		7563CEF825860FBD00D70488 /* storekit_testing_sampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7563CEF725860FBD00D70488 /* storekit_testing_sampleUITests.swift */; };
+		75E535782586372A00F5BF72 /* SubscriptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E535772586372A00F5BF72 /* SubscriptionViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +46,7 @@
 		7563CEF325860FBD00D70488 /* storekit-testing-sampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "storekit-testing-sampleUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7563CEF725860FBD00D70488 /* storekit_testing_sampleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = storekit_testing_sampleUITests.swift; sourceTree = "<group>"; };
 		7563CEF925860FBD00D70488 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		75E535772586372A00F5BF72 /* SubscriptionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,8 +97,8 @@
 		7563CED925860FBD00D70488 /* storekit-testing-sample */ = {
 			isa = PBXGroup;
 			children = (
+				75E5357C2586373A00F5BF72 /* Subscription */,
 				7563CEDA25860FBD00D70488 /* StoreKitTestingSampleApp.swift */,
-				7563CEDC25860FBD00D70488 /* SubscriptionView.swift */,
 				7563CEDE25860FBD00D70488 /* Assets.xcassets */,
 				7563CEE325860FBD00D70488 /* Info.plist */,
 				7563CEE025860FBD00D70488 /* Preview Content */,
@@ -128,6 +130,15 @@
 				7563CEF925860FBD00D70488 /* Info.plist */,
 			);
 			path = "storekit-testing-sampleUITests";
+			sourceTree = "<group>";
+		};
+		75E5357C2586373A00F5BF72 /* Subscription */ = {
+			isa = PBXGroup;
+			children = (
+				7563CEDC25860FBD00D70488 /* SubscriptionView.swift */,
+				75E535772586372A00F5BF72 /* SubscriptionViewModel.swift */,
+			);
+			path = Subscription;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -259,6 +270,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				75E535782586372A00F5BF72 /* SubscriptionViewModel.swift in Sources */,
 				7563CEDD25860FBD00D70488 /* SubscriptionView.swift in Sources */,
 				7563CEDB25860FBD00D70488 /* StoreKitTestingSampleApp.swift in Sources */,
 			);
