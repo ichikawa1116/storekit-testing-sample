@@ -20,12 +20,18 @@ struct SubscriptionView: View {
             .edgesIgnoringSafeArea(.all)
             VStack(alignment: .center) {
                 Text(viewModel.price)
-                Button( action: { viewModel.purchase() }) {
-                    Text("購入")
-                        .padding(.all, 5.0)
-                        .foregroundColor(.green)
-                        .background(Color.red)
+                ForEach(viewModel.products, id: \.id) { product in
+                    // TODO: ボタンデザイン
+                    Button("(\(product.price)) 購入") {
+                        viewModel.purchase(productId: product.id)
+                    }
                 }
+//                Button( action: { viewModel.purchase(productId: <#SubscriptionProduct.Id#>) }) {
+//                    Text("購入")
+//                        .padding(.all, 5.0)
+//                        .foregroundColor(.green)
+//                        .background(Color.red)
+//                }
             }.padding()
             
         }

@@ -14,7 +14,7 @@ final class SubscriptionViewModel: ObservableObject {
     @Published private(set) var price: String = ""
     
     private let _fetchProducts = PassthroughSubject<Void, Never>()
-    private let _purchase = PassthroughSubject<Void, Never>()
+    private let _purchase = PassthroughSubject<SubscriptionProduct.Id, Never>()
     private let paymentService: PaymentServiceType
     private var disposables = Set<AnyCancellable>()
     
@@ -32,9 +32,9 @@ final class SubscriptionViewModel: ObservableObject {
             .store(in: &disposables)
         
         _purchase
-            .flatMap { paymentService.purchase() }
+            .flatMap { paymentService.purchase(productId: $0) }
             .receive(on: DispatchQueue.main)
-            .sink(receiveValue: { [weak self] in
+            .sink(receiveValue: { [weak self] state in
                 print("成功")
             })
             .store(in: &disposables)
@@ -44,7 +44,7 @@ final class SubscriptionViewModel: ObservableObject {
         _fetchProducts.send(())
     }
     
-    func purchase() {
-        _purchase.send(())
+    func purchase(productId: SubscriptionProduct.Id) {
+        _purchase.send(productId)
     }
 }

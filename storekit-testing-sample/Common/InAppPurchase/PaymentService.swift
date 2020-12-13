@@ -11,10 +11,18 @@ import StoreKit
 
 protocol PaymentServiceType {
     func fetchProducts() -> AnyPublisher<[SubscriptionProduct], Never>
-    //func purchase(productId: SubscriptionProduct.Id)
+    func purchase(productId: SubscriptionProduct.Id) -> AnyPublisher<PaymentState, Never>
 }
 
-class PaymentService: NSObject, PaymentServiceType {
+enum PaymentState {
+    case purchasing
+    case purchased
+    case failed(Error)
+    case restored
+    case deferred
+}
+
+final class PaymentService: NSObject, PaymentServiceType {
     
     static let shared = PaymentService()
     
@@ -22,8 +30,69 @@ class PaymentService: NSObject, PaymentServiceType {
         "test_subsctiontion_1"
     ]
     
-    private let products = CurrentValueSubject<[SubscriptionProduct], Never>([])
-    private var paymentState = PassthroughSubject<PaymentState, Never>()
+    private let products = CurrentValueSubject<[SKProduct], Never>([])
+    private var _paymentState = PassthroughSubject<PaymentState, Never>()
+    private var _updatedTransactions = PassthroughSubject<[SKPaymentTransaction], Never>()
+    private let _purchase = PassthroughSubject<SubscriptionProduct.Id, Never>()
+    
+    override init() {
+        super.init()
+        
+        _updatedTransactions
+            .combineLatest(_purchase.eraseToAnyPublisher())
+            .receive(subscriber: Subscribers.Sink(
+                receiveCompletion: { _ in },
+                receiveValue: { [weak self] (transactions, id) in
+                    guard let self = self else {
+                        fatalError()
+                    }
+                    guard let transaction = transactions.filter({ $0.payment.productIdentifier == id.id }).first else {
+                        self._paymentState.send(.failed(PaymentError.notFound))
+                        return
+                    }
+
+                    switch transaction.transactionState {
+                    case .purchasing:
+                        self._paymentState.send(.purchasing)
+                    case .purchased:
+                        self.sendReceipt(transaction: transaction)
+                    case .failed:
+                        self.finish(transaction: transaction)
+                        self._paymentState.send(.failed(transaction.error ?? PaymentError.unknown))
+                    case .restored:
+                        break
+                    case .deferred:
+                        break
+                    @unknown default:
+                        break
+                    }
+                }
+            ))
+
+        _purchase
+            .tryMap { [weak self] id -> Result<SKPayment, PaymentError> in
+                guard let product = self?.products.value.filter({ $0.productIdentifier == id.id }).first else {
+                    return .failure(PaymentError.notFound)
+                }
+
+                return .success(SKMutablePayment(product: product))
+            }
+            .receive(subscriber: Subscribers.Sink(
+                receiveCompletion: { _ in },
+                receiveValue: { [weak self] result in
+                    switch result {
+                    case let .success(payment):
+                        self?.add(payment: payment)
+                    case let .failure(error):
+                        self?._paymentState.send(.failed(error))
+                    }
+                }
+            ))
+    }
+    
+    deinit {
+        removePaymentQueue()
+    }
     
     func fetchProducts() -> AnyPublisher<[SubscriptionProduct], Never> {
         
@@ -31,7 +100,19 @@ class PaymentService: NSObject, PaymentServiceType {
         request.delegate = self
         request.start()
         
-        return products.eraseToAnyPublisher()
+        return products
+            .map { $0.map(SubscriptionProduct.init(product:)) }
+            .eraseToAnyPublisher()
+    }
+    
+    func purchase(productId: SubscriptionProduct.Id) -> AnyPublisher<PaymentState, Never> {
+        _purchase.send(productId)
+        return _paymentState.eraseToAnyPublisher()
+    }
+    
+    private func sendReceipt(transaction: SKPaymentTransaction) {
+        // 本来はここでレシート送信をするが、そこは省略。
+        _paymentState.send(.purchased)
     }
 
 }
@@ -39,9 +120,7 @@ class PaymentService: NSObject, PaymentServiceType {
 extension PaymentService: SKProductsRequestDelegate {
     
     func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
-        
         products.value = response.products
-            .map { SubscriptionProduct(product: $0) }
     }
     
     func request(_ request: SKRequest, didFailWithError error: Error) {
@@ -49,32 +128,37 @@ extension PaymentService: SKProductsRequestDelegate {
     }
 }
 
+extension PaymentService: SKPaymentTransactionObserver {
+    
+    func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
+        _updatedTransactions.send(transactions)
+    }
+    
+    func paymentQueue(_ queue: SKPaymentQueue, restoreCompletedTransactionsFailedWithError error: Error) {
+        print("restoreCompletedTransactionsFailedWithError \(error)")
+    }
+    
+    func paymentQueueRestoreCompletedTransactionsFinished(_ queue: SKPaymentQueue) {
+        print("transactions finished")
+    }
+}
+
 extension PaymentService: SKRequestDelegate {
     
-}
-
-struct SubscriptionProduct {
-    let id: Id
-    let price: String
-    
-    struct Id {
-        let id: String
+    func addPaymentQueue() {
+        SKPaymentQueue.default().add(self)
     }
-}
-
-extension SubscriptionProduct {
     
-    init(product: SKProduct) {
-        id = Id(id: product.productIdentifier)
-
-        let formatter = NumberFormatter()
-        formatter.formatterBehavior = .behavior10_4
-        formatter.numberStyle = .currency
-        formatter.locale = product.priceLocale
-        price = formatter.string(from: product.price) ?? ""
+    func removePaymentQueue() {
+        SKPaymentQueue.default().remove(self)
     }
-}
-
-enum PaymentState {
+    
+    func finish(transaction: SKPaymentTransaction) {
+        SKPaymentQueue.default().finishTransaction(transaction)
+    }
+    
+    func add(payment: SKPayment) {
+        SKPaymentQueue.default().add(payment)
+    }
     
 }
