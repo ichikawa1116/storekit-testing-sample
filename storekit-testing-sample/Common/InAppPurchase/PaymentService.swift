@@ -9,14 +9,14 @@ import Foundation
 import Combine
 import StoreKit
 
-protocol PaymentManagerType {
+protocol PaymentServiceType {
     func fetchProducts() -> AnyPublisher<[SubscriptionProduct], Never>
     //func purchase(productId: SubscriptionProduct.Id)
 }
 
-class PaymentManager: NSObject, PaymentManagerType {
+class PaymentService: NSObject, PaymentServiceType {
     
-    static let shared = PaymentManager()
+    static let shared = PaymentService()
     
     let productIdentifiers: Set<String> = [
         "com.nonchalant.consumable1",
@@ -37,7 +37,7 @@ class PaymentManager: NSObject, PaymentManagerType {
 
 }
 
-extension PaymentManager: SKProductsRequestDelegate {
+extension PaymentService: SKProductsRequestDelegate {
     
     func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
         
@@ -50,11 +50,9 @@ extension PaymentManager: SKProductsRequestDelegate {
     }
 }
 
-extension PaymentManager: SKRequestDelegate {
+extension PaymentService: SKRequestDelegate {
     
 }
-
-
 
 struct SubscriptionProduct {
     let id: Id
