@@ -27,7 +27,8 @@ final class PaymentService: NSObject, PaymentServiceType {
     static let shared = PaymentService()
     
     let productIdentifiers: Set<String> = [
-        "test_subsctiontion_1"
+        "test_subsctiontion_1",
+        "test_subsctiontion_2"
     ]
     
     private let products = CurrentValueSubject<[SKProduct], Never>([])
