@@ -35,7 +35,7 @@ final class SubscriptionViewModel: ObservableObject {
             .flatMap { paymentService.purchase(productId: $0) }
             .receive(on: DispatchQueue.main)
             .sink(receiveValue: { [weak self] state in
-                print("成功")
+                
             })
             .store(in: &disposables)
     }

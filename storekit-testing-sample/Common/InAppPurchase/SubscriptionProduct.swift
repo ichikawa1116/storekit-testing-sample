@@ -20,6 +20,7 @@ struct SubscriptionProduct {
 extension SubscriptionProduct {
     
     init(product: SKProduct) {
+        print(product.productIdentifier)
         id = Id(id: product.productIdentifier)
         price = product.localizedPrice()
     }

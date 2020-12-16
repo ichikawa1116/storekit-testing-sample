@@ -39,6 +39,8 @@ final class PaymentService: NSObject, PaymentServiceType {
     override init() {
         super.init()
         
+        addPaymentQueue()
+        
         _updatedTransactions
             .combineLatest(_purchase.eraseToAnyPublisher())
             .receive(subscriber: Subscribers.Sink(
@@ -53,17 +55,20 @@ final class PaymentService: NSObject, PaymentServiceType {
                     }
 
                     switch transaction.transactionState {
+                    
                     case .purchasing:
                         self._paymentState.send(.purchasing)
                     case .purchased:
-                        self.sendReceipt(transaction: transaction)
+                        self._paymentState.send(.purchased)
                     case .failed:
                         self.finish(transaction: transaction)
-                        self._paymentState.send(.failed(transaction.error ?? PaymentError.unknown))
+                        self._paymentState.send(
+                            .failed(transaction.error ?? PaymentError.unknown)
+                        )
                     case .restored:
-                        break
+                        self._paymentState.send(.restored)
                     case .deferred:
-                        break
+                        self._paymentState.send(.deferred)
                     @unknown default:
                         break
                     }
@@ -75,6 +80,10 @@ final class PaymentService: NSObject, PaymentServiceType {
                 guard let product = self?.products.value.filter({ $0.productIdentifier == id.id }).first else {
                     return .failure(PaymentError.notFound)
                 }
+                
+                var payment = SKMutablePayment(product: product)
+                
+                payment.simulatesAskToBuyInSandbox = true
 
                 return .success(SKMutablePayment(product: product))
             }
@@ -83,6 +92,7 @@ final class PaymentService: NSObject, PaymentServiceType {
                 receiveValue: { [weak self] result in
                     switch result {
                     case let .success(payment):
+                        print(payment.simulatesAskToBuyInSandbox)
                         self?.add(payment: payment)
                     case let .failure(error):
                         self?._paymentState.send(.failed(error))
@@ -107,6 +117,8 @@ final class PaymentService: NSObject, PaymentServiceType {
     }
     
     func purchase(productId: SubscriptionProduct.Id) -> AnyPublisher<PaymentState, Never> {
+        
+        print(productId)
         _purchase.send(productId)
         return _paymentState.eraseToAnyPublisher()
     }
