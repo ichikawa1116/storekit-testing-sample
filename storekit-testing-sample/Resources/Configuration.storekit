@@ -3,10 +3,11 @@
 
   ],
   "settings" : {
-    "_askToBuyEnabled" : true,
+    "_askToBuyEnabled" : false,
     "_billingIssuesEnabled" : false,
     "_failTransactionsEnabled" : false,
     "_locale" : "ja",
+    "_storefront" : "JPN",
     "_storeKitError" : 0,
     "_timeRate" : 6
   },
@@ -22,8 +23,8 @@
           "adHocOffers" : [
 
           ],
-          "displayPrice" : "0.99",
-          "familyShareable" : true,
+          "displayPrice" : "100",
+          "familyShareable" : false,
           "groupNumber" : 1,
           "internalID" : "F256FE08",
           "introductoryOffer" : null,
@@ -34,7 +35,7 @@
               "locale" : "ja"
             }
           ],
-          "productID" : "test_subsctiontion_2",
+          "productID" : "test_subsctiontion_1",
           "recurringSubscriptionPeriod" : "P1M",
           "referenceName" : "plan1",
           "subscriptionGroupID" : "20A980D6",

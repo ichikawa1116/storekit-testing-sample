@@ -81,7 +81,7 @@ final class PaymentService: NSObject, PaymentServiceType {
                     return .failure(PaymentError.notFound)
                 }
                 
-                var payment = SKMutablePayment(product: product)
+                let payment = SKMutablePayment(product: product)
                 
                 payment.simulatesAskToBuyInSandbox = true
 
@@ -143,8 +143,26 @@ extension PaymentService: SKProductsRequestDelegate {
 
 extension PaymentService: SKPaymentTransactionObserver {
     
-    func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
-        _updatedTransactions.send(transactions)
+    func paymentQueue(
+        _ queue: SKPaymentQueue,
+        updatedTransactions transactions: [SKPaymentTransaction]) {
+        
+        for transaction in transactions {
+            switch transaction.transactionState {
+            case .purchasing:
+                print("purchasing")
+            case .purchased:
+                print("purchased")
+            case .failed:
+                print("failed")
+            case .restored:
+                print("restored")
+            case .deferred:
+                print("deferred")
+            @unknown default:
+                break
+            }
+        }
     }
     
     func paymentQueue(_ queue: SKPaymentQueue, restoreCompletedTransactionsFailedWithError error: Error) {
